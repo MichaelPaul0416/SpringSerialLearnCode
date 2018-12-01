@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.paul.org/schema/expand" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.paul.org/schema/expand" elementFormDefault="qualified">
+	<xs:element name="services">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="service" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attributeGroup ref="other-service"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="autowire">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="byName"/>
+						<xs:enumeration value="byType"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="computer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="core" type="computerMain"/>
+				<xs:element name="ext-service">
+					<xs:complexType>
+						<xs:attributeGroup ref="other-service"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string"/>
+			<xs:attribute name="owner" type="xs:string"/>
+			<xs:attribute name="price">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:pattern value="[1-9][0-9]*.[0-9][0-9]"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="computerMain">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="cpu">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Intel i5 8400"/><xs:enumeration value="AMD"/><xs:enumeration value="others"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="gpu">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="影驰大将 1050Ti"/><xs:enumeration value="七彩虹 1060g"/><xs:enumeration value="others"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="rom" type="xs:string"/>
+				<xs:attribute name="disk" type="xs:string"/>
+				<xs:attribute name="disk-size" type="xs:integer"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:attributeGroup name="other-service">
+		<xs:attribute name="keyboard">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"><xs:enumeration value="青轴"/><xs:enumeration value="黑轴"/><xs:enumeration value="殷桃轴"/></xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="monitor">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="aoc"/><xs:enumeration value="dell"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="mouse">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="无线鼠标"/><xs:enumeration value="有线鼠标"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+</xs:schema>

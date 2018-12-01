@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.paul.org/schema/note" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.paul.org/schema/note" elementFormDefault="qualified">
+	<xs:element name="note">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="to" type="xs:string"/>
+				<xs:element name="from" type="xs:string"/>
+				<xs:element name="heading" type="xs:string"/>
+				<xs:element name="body" type="xs:string"/>
+				<xs:element name="number">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minExclusive value="0"/>
+							<xs:maxExclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="car">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Audi"/>
+							<xs:enumeration value="Golf"/>
+							<xs:enumeration value="Benz"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<!--去除空格-->
+				<xs:element name="replace">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:whiteSpace value="replace"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<!--保留空格-->
+				<xs:element name="preserve">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:whiteSpace value="preserve"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="employee" type="employeeInfo"/>
+				<xs:element name="teacher" type="personInfo"/>
+				<!--标签有属性,但是没有标签值-->
+				<xs:element name="product">
+					<xs:complexType>
+						<xs:attribute name="pid" type="xs:positiveInteger"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="shoes">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:integer">
+								<xs:attribute name="country" type="xs:string"/>
+							</xs:extension>
+							<!--simpleContent如果有integer的话，那就必须是extension-->
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="letter" type="complexTag"/>
+				<xs:element name="choose" type="choose" maxOccurs="unbounded"/>
+				<xs:element name="computer">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attributeGroup ref="basicMessage"/>
+								<xs:anyAttribute/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!--group代表的是一个组，attributesGroup代表的是属性组-->
+	<xs:attributeGroup name="basicMessage">
+		<xs:attribute name="cpu">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Intel i5 8400"/>
+					<xs:enumeration value="AMD"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="rom">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="金士顿"/>
+					<xs:enumeration value="铭瑄"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="disk">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="机械硬盘"/>
+					<xs:enumeration value="固态硬盘"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!--choice指示器-->
+	<xs:complexType name="choose">
+		<xs:choice>
+			<xs:element name="if" type="xs:string"/>
+			<xs:element name="else">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="flag" type="xs:integer"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<!--复合元素，包含文本和内容-->
+	<xs:complexType name="complexTag" mixed="true">
+		<xs:all>
+			<xs:element name="fullname" nillable="false">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="province" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="orderid" type="xs:positiveInteger"/>
+			<xs:element name="shipdate" type="xs:date"/>
+		</xs:all>
+	</xs:complexType>
+	<!--作为组件被复用-->
+	<xs:complexType name="personInfo">
+		<xs:sequence>
+			<xs:element name="firstname" type="xs:string"/>
+			<xs:element name="lastname" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--继承组件-->
+	<xs:complexType name="employeeInfo">
+		<xs:complexContent>
+			<xs:extension base="personInfo">
+				<xs:sequence>
+					<xs:element name="factory" type="xs:string"/>
+					<xs:element name="workYear">
+						<xs:simpleType>
+							<xs:restriction base="xs:decimal">
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="60"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

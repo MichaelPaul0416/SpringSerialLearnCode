@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+
+	<bean class="com.wq.spring.context.demo.bean.Framework"/>
+
+	<!--spring自定义模块-->
+	<!--<test:testBean id="testBean" name="Paul" age="23"/>-->
+
+
+	<bean id="demoBean1" class="com.wq.spring.context.demo.DemoApplicationContextTest.DemoBean1"/>
+	<bean id="demoBean2" class="com.wq.spring.context.demo.DemoApplicationContextTest.DemoBean2"/>
+
+	<bean id="dependingBean" class="com.wq.spring.context.demo.DemoApplicationContextTest.DependingBean" depends-on="demoBean1,demoBean2"/>
+
+	<!--depends-on-->
+	<!--depends-on用来表示一个bean A的实例化依靠另一个bean B的实例化， 但是A并不需要持有一个B的对象，如果需要的话就不用depends-on，直接用依赖注入就可以了。-->
+	<bean id="holdingBean" class="com.wq.spring.context.demo.DemoApplicationContextTest.HoldingBean">
+		<property name="dependingBean" ref="dependingBean"/>
+	</bean>
+
+	<alias name="customBeanAware" alias="beanNameAware"/>
+	<alias name="customBeanAware" alias="classloaderAware"/>
+	<alias name="customBeanAware" alias="beanFactoryAware"/>
+	<bean class="com.wq.spring.context.demo.aware.CustomBeanAware" name="customBeanAware"/>
+
+	<!--循环依赖-->
+	<!--<bean id="beanA" class="com.wq.spring.context.com.wq.spring.context.demo.DependsBeanTest.BeanA" depends-on="beanB"/>-->
+
+	<!--<bean id="beanB" class="com.wq.spring.context.com.wq.spring.context.demo.DependsBeanTest.BeanB" depends-on="beanC"/>-->
+
+	<!--<bean id="beanC" class="com.wq.spring.context.com.wq.spring.context.demo.DependsBeanTest.BeanC" depends-on="beanA"/>-->
+
+	<!--factory-bean-->
+	<bean id="simpleProxyBean" class="com.wq.spring.context.demo.factorybean.SimpleProxyFactoryBean"/>
+
+	<!--common BeanPostProcessor-->
+	<bean id="localBeanValidator" class="com.wq.spring.context.demo.SimpleBeanPostProcessor"/>
+
+	<!--BeanDefinitionRegistryPostProcessor-->
+	<bean id="registryBean" class="com.wq.spring.context.demo.SimpleCustomLocalBeanRegister"/>
+
+	<!--原生Bean-->
+	<bean id="protoService" class="com.wq.spring.context.demo.aop.ServiceImpl.ProtoServiceImpl"/>
+	<!--使用declare-parent增强的bean-->
+	<bean id="additionService" class="com.wq.spring.context.demo.aop.ServiceImpl.AdditionalServiceImpl"/>
+
+	<aop:config>
+		<aop:aspect>
+			<aop:declare-parents types-matching="com.wq.spring.context.demo.aop.ServiceImpl.ProtoServiceImpl"
+								 implement-interface="com.wq.spring.context.demo.aop.AdditionalService"
+								 default-impl="com.wq.spring.context.demo.aop.ServiceImpl.AdditionalServiceImpl"/>
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="serviceBean" class="com.wq.spring.context.demo.aop.ServiceImpl"/>
+	<bean id="aspectCommon" class="com.wq.spring.context.demo.aop.ServiceImpl.ServiceAdvice"/>
+
+	<!--执行顺序是before > around > after-returning > after -->
+	<aop:config>
+		<aop:pointcut id="servicePoint" expression="execution(* com.wq.spring.context.demo.aop.ServiceImpl.* (..)) "/>
+		<aop:aspect id="allAspect" ref="aspectCommon">
+			<aop:before method="doBefore" pointcut-ref="servicePoint"/>
+			<aop:after method="doAfter" pointcut-ref="servicePoint"/>
+			<aop:after-returning method="afterReturning" pointcut-ref="servicePoint" returning="result"/>
+			<aop:around method="invoke" pointcut-ref="servicePoint"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

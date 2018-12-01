@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--xmlns=""指定了默认的命名空间-->
+<note xmlns="http://www.paul.org/schema/note"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+      xs:schemaLocation="http://www.paul.org/schema/note note.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	<!--如果beans.xsd在网络上不存在，那么就写本地地址，如果存在，可以引用网络地址-->
+	<to>1</to>
+	<from>2</from>
+	<heading>3</heading>
+	<body>4</body>
+	<number>10</number>
+	<car>Benz</car>
+	<!--去除空格-->
+	<replace>123</replace>
+	<!--保留空格-->
+	<preserve>1 2 3</preserve>
+
+	<employee>
+		<firstname>Michael</firstname>
+		<lastname>Paul</lastname>
+		<factory>Hundsun</factory>
+		<workYear>1.5</workYear>
+	</employee>
+
+	<teacher>
+		<firstname></firstname>
+		<lastname></lastname>
+	</teacher>
+
+	<product pid="1"/>
+
+	<shoes country="china">1</shoes>
+
+	<letter>
+		letterInfo
+		<fullname province="zhejiang">mmm</fullname>
+		<orderid>1</orderid>
+		<shipdate>2018-11-29</shipdate>
+	</letter>
+
+	<choose>
+		<if></if>
+	</choose>
+
+	<choose>
+		<else flag="0">12</else>
+	</choose>
+
+	<computer cpu="Intel i5 8400" disk="固态硬盘" rom="金士顿">组装机</computer>
+</note>
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:exp="http://www.paul.org/schema/expand"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.paul.org/schema/expand http://www.paul.org/schema/expand/spring-expand-1.0.xsd">
+
+	<exp:computer owner="Paul" price="1.23" id="computer">
+		<exp:core cpu="Intel i5 8400" disk="机械硬盘" disk-size="256" gpu="影驰大将 1050Ti" rom="8G"/>
+		<exp:ext-service keyboard="殷桃轴" monitor="aoc" mouse="有线鼠标"/>
+	</exp:computer>
+</beans>
