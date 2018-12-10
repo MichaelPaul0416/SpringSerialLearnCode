@@ -35,7 +35,7 @@ public class AdvanceCallbackFilter implements CallbackFilter {
     }
 
 
-    public static void registerMethodStrategy(String method,Integer integer){
+    public static void registerMethodStrategy(String method,Integer integer){//Integer对应的是注册setCallback的增强，具体数字代表callbacks中的下标
         if(StringUtils.isEmpty(method)){
             logger.warn("empty method name");
             return;
